@@ -1,0 +1,48 @@
+﻿@model situationWebBTS.Models.Instructor
+
+@{
+    ViewBag.Title = "Supprimer";
+}
+
+<h2>Supprimer</h2>
+
+<h3>Etes-vous sur de vouloir supprimer cet enseignant?</h3>
+<div>
+    <h4>Instructor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstMidName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstMidName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HireDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HireDate)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Supprimer" class="btn btn-default" /> |
+            @Html.ActionLink("Retour", "Index")
+        </div>
+    }
+</div>

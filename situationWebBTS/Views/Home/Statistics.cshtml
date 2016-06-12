@@ -1,0 +1,11 @@
+﻿@model situationWebBTS.ViewModels.StatisticsData
+
+@{
+    ViewBag.Title = "Statistics";
+}
+
+<h2>Statistiques</h2>
+
+@{Html.RenderPartial("EnrollmentStats", Model.EnrollmentData);}
+
+@{Html.RenderPartial("CourseStats", Model.TopCoursesData);}

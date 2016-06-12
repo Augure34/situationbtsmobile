@@ -1,0 +1,59 @@
+﻿@model PagedList.IPagedList<situationWebBTS.Models.Course>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Cours";
+}
+
+<h2>Cours</h2>
+
+
+<p>
+    @Html.ActionLink("Ajouter un cours", "Create")
+</p>
+
+@using (Html.BeginForm("Index", "Courses", FormMethod.Get))
+{
+    <p>
+        Rechercher un cours: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Recherche" />
+
+        @Html.ActionLink("Annuler", "Index")
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Titre", "Index", new { sortOrder = ViewBag.TitleSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Crédits", "Index", new { sortOrder = ViewBag.CreditSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Credits)
+            </td>
+            <td>
+                @Html.ActionLink("Modifier", "Edit", new { id = item.CourseID }) |
+                @Html.ActionLink("Détails", "Details", new { id = item.CourseID }) |
+                @Html.ActionLink("Supprimer", "Delete", new { id = item.CourseID })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) sur @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

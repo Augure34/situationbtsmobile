@@ -1,0 +1,126 @@
+﻿@model situationWebBTS.ViewModels.InstructorIndexData
+
+@{
+    ViewBag.Title = "Enseignants";
+}
+
+<h2>Enseignants</h2>
+
+<p>
+    @Html.ActionLink("Ajouter un enseignant", "Create")
+</p>
+
+@using (Html.BeginForm("Index", "Instructors", FormMethod.Get))
+{
+    <p>
+        Rechercher un cours: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Recherche" />
+
+        @Html.ActionLink("Annuler", "Index")
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Nom", "Index", new { sortOrder = ViewBag.LastNameSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Prénom", "Index", new { sortOrder = ViewBag.FirstNameSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Date d'embauche", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>Cours</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Instructors)
+    {
+        string selectedRow = "";
+        if (item.ID == ViewBag.InstructorID)
+        {
+            selectedRow = "success";
+        }
+        <tr class="@selectedRow">
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstMidName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HireDate)
+            </td>
+            <td>
+                @{
+                    foreach (var course in item.Courses)
+                    {
+                        @course.Title <br />
+                    }
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Plus d'informations", "Index", new { id = item.ID }) |
+                @Html.ActionLink("Modifier", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Détails", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Supprimer", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@if (Model.Courses != null)
+{
+    <h3>Les cours dispensés par cet enseignant:</h3>
+    <table class="table">
+        <tr>            
+            <th>Titre</th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.Courses)
+        {
+            string selectedRow = "";
+            if (item.CourseID == ViewBag.CourseID)
+            {
+                selectedRow = "success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @Html.ActionLink("Plus d'informations", "Index", new { courseID = item.CourseID })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+@if (Model.Enrollments != null)
+{
+    <h3>
+        Etudiants inscris dans ce cours:
+    </h3>
+    <table class="table">
+        <tr>
+            <th>Nom complet (@ViewBag.TotalStudents étudiants)</th>
+            <th>Notes (@ViewBag.GradeAverage de moyenne)</th>
+        </tr>
+
+        @foreach (var item in Model.Enrollments)
+        {
+            <tr>
+                <td>
+                    @item.Student.FullName
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Grade)
+                </td>
+            </tr>
+        }
+    </table>
+}

@@ -25,11 +25,9 @@
                 @item.StudentCount
             </td>
             <td width="20%">
-                @try
-                { @Math.Round(decimal.Parse(item.GradeAverage.Value.ToString()), 2);
-                }
-                catch
-                { @item.GradeAverage;
+                @if (!object.Equals(item.GradeAverage, default(double?)))
+                {
+                    @Math.Round(decimal.Parse(item.GradeAverage.Value.ToString()), 2);
                 }
             </td>
         </tr>

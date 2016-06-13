@@ -56,7 +56,6 @@ namespace situationWebBTS.Migrations
 
 
             students.ForEach(s => context.Students.AddOrUpdate(p => p.LastName, s));
-            //students.ForEach(s => context.Students.Add(s));
             context.SaveChanges();
 
             var instructors = new List<Instructor>
